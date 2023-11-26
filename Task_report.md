@@ -90,5 +90,7 @@ kubectl port-forward service/hello-world-service 32777
 
 ![HelloWorld](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Хеллоу%20ворлд.png)
 
+Как мы видим все работает
+
 ## Схема
 ![схема](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Схема.png)

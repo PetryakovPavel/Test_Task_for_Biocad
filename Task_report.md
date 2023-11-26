@@ -10,86 +10,67 @@ RUN pip install -r requirements.txt --no-cache-dir
 COPY . .
 CMD ["gunicorn", "--bind", "0.0.0.0:32777", "web_project.wsgi"]
 ```
-![Создание образа](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Создание%20образа.png)
+
+
+![Создание образа](pictures/Создание образа.png)
+
+Авторизуемся в DockerHub
+
+![авторизация](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Вход%20в%20ДХ.png)
 
  Собраный образ  загружаем на DockerHub
 
-```
-docker build -t niktimo/hello_world_django hello/
-docker push niktimo/hello_world_django
-```
-![img1](images/img1.png)
-### Запуск Minikube, создание demployment с двумя репликами
-Запуск minikube cluster с драйвером docker
-```
-minikube start --driver docker
-```
-![img2](images/img2.png)
 
-Создадим deployment на основе манифеста. В манифесте указываем образ для контейнера, количество реплик - 2, и значение порта контейнера. После создания проверяем наличие деплоймента и двух реплик контейнера.
-```
-kubectl apply -f manifests/test_deployment.yml
-kubectl get deploy
-kubectl get pod
-```
-![img3](images/img3.png)
-![img4](images/img4.png)
+![загрузка](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Загрузка%20в%20ДХ.png)
 
-Содержание манифеста:
+## Запуск Minikube, создание demployment с двумя репликами
+Запускаем minikube
 ```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: hello-world-deployment
-  labels:
-    app: hello-world
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: hello-world
-  template:
-    metadata:
-      labels:
-        app: hello-world
-    spec:
-      containers:
-      - name: hello-world
-        image: niktimo/hello_world_django
-        ports:
-        - containerPort: 32777
+minikube start 
 ```
-### Создание сервиса для доступа
-Созданные deploy расширяем с помощью сервиса NodePort. После расширения проверяем наличие сервиса. Вывод в формате Yaml сохраняем в файл service.yml.
-```
-kubectl expose deploy/hello-world-deployment --name=hello-world-service --type=NodePort --port=32777 --target-port=32777 -o yaml > manifests/service.yml
-kubectl get service
-```
-![img5](images/img5.png)
+![миникуб](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/МиникубСтарт.png)
 
-Содержание манифеста сервиса:
+Пишим манифест для deployment 
+
+![deploy](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Деплой.png)
+
+Создаем deployment на основе манифеста.
+
+
+Проверяем наличие деплоймента и двух реплик контейнера.
+
+![depl](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Деплой%20командой.png)
+
+
+## Создание сервиса для доступа
+Расширяем deploy  с помощью сервиса NodePort.После выполнения команды  проверяем наличие сервиса. Вывод в формате Yaml сохраняем в файл service.yml.
+
+![service](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/сервис.png)
+
+Манифеста сервиса:
+
 ```
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: "2023-11-12T16:27:24Z"
+  creationTimestamp: "2023-11-23T15:20:24Z"
   labels:
     app: hello-world
   name: hello-world-service
   namespace: default
-  resourceVersion: "12217"
-  uid: 3fb374d2-93c9-47ad-9a95-5a29b0e69af7
+  resourceVersion: "11232"
+  uid: 352568b5-fd96-4285-a2d6-1a474f3eeb19
 spec:
-  clusterIP: 10.106.44.255
+  clusterIP: 10.97.88.75
   clusterIPs:
-  - 10.106.44.255
+  - 10.97.88.75
   externalTrafficPolicy: Cluster
   internalTrafficPolicy: Cluster
   ipFamilies:
   - IPv4
   ipFamilyPolicy: SingleStack
   ports:
-  - nodePort: 30228
+  - nodePort: 31229
     port: 32777
     protocol: TCP
     targetPort: 32777
@@ -101,13 +82,10 @@ status:
   loadBalancer: {}
 
 ```
-### Запуск проброса портов и проверка результата
+## Запуск проброса портов и проверка результата
+
 ```
 kubectl port-forward service/hello-world-service 32777
 ```
-![img6](images/img6.png)
-![img7](images/img7.png)
 
-Как видно выше приложение достпуно по адресу [http://localhost:32777/](http://localhost:32777/)
-### Схема
-![schema](images/schema.png)
+![HelloWorld](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Хеллоу%20ворлд.png)

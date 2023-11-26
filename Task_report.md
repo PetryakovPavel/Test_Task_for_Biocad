@@ -12,7 +12,7 @@ CMD ["gunicorn", "--bind", "0.0.0.0:32777", "web_project.wsgi"]
 ```
 
 
-![Создание образа](pictures/Создание образа.png)
+![Создание образа](https://github.com/PetryakovPavel/Test_Task_for_Biocad/blob/main/pictures/Создание%20образа.png)
 
 Авторизуемся в DockerHub
 
